@@ -1,4 +1,6 @@
 # gettonote
+# .env
+VUE_APP_BASE_URL = https://dev-api.gettonote.com/api/v1
 
 ## Project setup
 ```
