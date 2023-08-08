@@ -4,12 +4,12 @@
       <div class="form-wrapper login-form">
         <h2 class="text-center mb-1">Welcome Back</h2>
 
-        <v-form v-model="isFormValid">
+        <v-form ref="loginForm">
           <v-container>
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  v-model="registerData.email"
+                  v-model="loginData.email"
                   :rules="[rules.required, rules.email]"
                   label="E-mail"
                   required
@@ -18,11 +18,24 @@
 
               <v-col cols="12">
                 <v-text-field
-                  v-model="registerData.password"
-                  :counter="10"
+                  v-model="loginData.password"
+                  type="password"
                   label="Password"
                   required
                 ></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <div class="text-center">
+                  <v-btn
+                    depressed
+                    class="pryBtn"
+                    :loading="submitLoading"
+                    @click="submitLogin()"
+                  >
+                    Submit
+                  </v-btn>
+                </div>
               </v-col>
             </v-row>
           </v-container>
@@ -36,6 +49,10 @@
           </p>
         </div>
       </div>
+
+      <v-snackbar v-model="toast.status" top centered :color="toast.color">
+        {{ toast.message }}
+      </v-snackbar>
     </fullscreen>
   </div>
 </template>
@@ -43,26 +60,61 @@
 <script>
 import Fullscreen from "@/components/FullScreen";
 import { mapGetters } from "vuex";
+import { login } from "@/services/auth";
 
 export default {
   data() {
     return {
-      isFormValid: false,
-      registerData: {
+      toast: {
+        status: false,
+        message: "",
+        color: "success",
+      },
+      submitLoading: false,
+      loginData: {
         email: "",
         password: "",
       },
       rules: {
         required: (value) => !!value || "Required",
-        number: (value) => !value || /^[0-9]*$/.test(value) || "Invalid value",
-        string: (value) =>
-          !value || /^[A-Za-z]+$/.test(value) || "Invalid value",
         email: (value) =>
           !value ||
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
           "Invalid E-mail",
       },
     };
+  },
+  methods: {
+    validate() {
+      this.$refs.loginForm.validate();
+    },
+    async submitLogin() {
+      this.submitLoading = true;
+      const isValid = this.$refs.loginForm.validate();
+
+      if (isValid) {
+        try {
+          const res = await login(this.loginData);
+          console.log({ res });
+
+          const { message } = res.response.data;
+
+          this.toast.status = true;
+          this.toast.message = message;
+          this.toast.color = "success";
+
+          this.submitLoading = false;
+        } catch (error) {
+          const { message } = error.response.data;
+
+          this.toast.status = true;
+          this.toast.message = message;
+          this.toast.color = "red";
+
+          this.submitLoading = false;
+        }
+      }
+    },
   },
   components: {
     Fullscreen,

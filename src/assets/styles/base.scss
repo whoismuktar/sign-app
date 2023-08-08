@@ -11,6 +11,11 @@
   justify-content: center;
 }
 
+.pryBtn {
+  background-color: $pry-color !important;
+  color: $white-color !important;
+}
+
 .form-wrapper {
   background-color: $white-color;
   border-radius: 20px;

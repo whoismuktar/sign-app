@@ -2,38 +2,59 @@
   <div class="register-view">
     <fullscreen>
       <div class="form-wrapper register-form">
-        <h2 class="text-center mb-1">Register</h2>
+        <h2 class="text-center mb-1">Create An Account</h2>
 
-        <v-form v-model="valid">
+        <v-form ref="registerForm">
           <v-container>
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  v-model="firstname"
-                  :rules="nameRules"
-                  :counter="10"
-                  label="First name"
+                  v-model.trim="registerData.first_name"
+                  :rules="[rules.required, rules.string]"
+                  label="First Name"
                   required
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12">
                 <v-text-field
-                  v-model="lastname"
-                  :rules="nameRules"
-                  :counter="10"
-                  label="Last name"
+                  v-model.trim="registerData.last_name"
+                  :rules="[rules.required, rules.string]"
+                  label="Last Name"
                   required
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12">
                 <v-text-field
-                  v-model="email"
-                  :rules="emailRules"
+                  v-model.trim="registerData.email"
+                  :rules="[rules.required, rules.email]"
                   label="E-mail"
                   required
                 ></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <v-text-field
+                  v-model="registerData.password"
+                  :rules="[rules.required, rules.min6]"
+                  type="password"
+                  label="Password"
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12">
+                <div class="text-center">
+                  <v-btn
+                    depressed
+                    class="pryBtn"
+                    :loading="submitLoading"
+                    @click="submitregister()"
+                  >
+                    CREATE ACCOUNT
+                  </v-btn>
+                </div>
               </v-col>
             </v-row>
           </v-container>
@@ -43,20 +64,97 @@
           <br />
           <p>
             Already have an Account?
-            <router-link to="/login">Login</router-link>
+            <router-link to="/">Login</router-link>
           </p>
         </div>
       </div>
+
+      <v-snackbar v-model="toast.status" top centered :color="toast.color">
+        {{ toast.message }}
+      </v-snackbar>
     </fullscreen>
   </div>
 </template>
 
 <script>
 import Fullscreen from "@/components/FullScreen";
+import { mapGetters } from "vuex";
+import { register } from "@/services/auth";
 
 export default {
+  data() {
+    return {
+      toast: {
+        status: false,
+        message: "",
+        color: "success",
+      },
+      submitLoading: false,
+      registerData: {
+        first_name: "",
+        last_name: "",
+        role: "User",
+        email: "",
+        password: "",
+      },
+      rules: {
+        required: (value) => !!value || "Required",
+        min6: (value) => value.length >= 6 || "Min 6 characters",
+        string: (value) =>
+          !value || /^[A-Za-z]+$/.test(value) || "Invalid value",
+        email: (value) =>
+          !value ||
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+          "Invalid E-mail",
+      },
+    };
+  },
+  methods: {
+    validate() {
+      this.$refs.registerForm.validate();
+    },
+    async submitregister() {
+      const isValid = this.$refs.registerForm.validate();
+
+      if (isValid) {
+        this.submitLoading = true;
+
+        try {
+          const res = await register(this.registerData);
+          console.log({ res });
+          const message = "Your accocunt has been created successfully!";
+
+          this.toast.status = true;
+          this.toast.message = message;
+          this.toast.color = "success";
+
+          this.$router.push("/profile")
+
+          this.submitLoading = false;
+        } catch (error) {
+          const { message } = error.response.data;
+
+          this.toast.status = true;
+          this.toast.message = message;
+          this.toast.color = "red";
+
+          this.submitLoading = false;
+        }
+      }
+    },
+  },
   components: {
     Fullscreen,
+  },
+  computed: {
+    ...mapGetters({
+      // rules: "app/rules",
+      // getCurrencies: "app/getCurrencies",
+    }),
+  },
+  mounted() {
+    // console.log({rules: this.rules});
+    // console.log({ rules: this.getCurrencies });
   },
 };
 </script>
