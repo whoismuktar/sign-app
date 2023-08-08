@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "@/views/HomeView";
+import Profile from "@/views/Profile";
 import LoginView from "@/views/Login";
 import RegisterView from "@/views/Register";
 import NotFound from "@/views/NotFound";
@@ -19,9 +19,9 @@ const routes = [
     component: RegisterView,
   },
   {
-    path: "/home",
-    name: "home",
-    component: HomeView,
+    path: "/profile",
+    name: "profile",
+    component: Profile,
   },
   {
     path: "*",
