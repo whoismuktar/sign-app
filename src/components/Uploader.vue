@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { uploadDoc } from "@/services/user";
+import { uploadDoc } from "@/services/documents";
 import { getBase64 } from "@/helpers";
 
 export default {
