@@ -11,17 +11,27 @@ const routes = [
   {
     path: "/",
     name: "login",
+    alias: "/login",
     component: LoginView,
+    meta: {
+      requiresLanding: true
+    }
   },
   {
     path: "/register",
     name: "register",
     component: RegisterView,
+    meta: {
+      requiresLanding: true
+    }
   },
   {
     path: "/profile",
     name: "profile",
     component: Profile,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "*",

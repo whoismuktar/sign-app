@@ -1,22 +1,19 @@
-const state = {
-  settings: {},
-  genres: [],
-  product_categories: [],
-  public_relations_user: {},
-};
+const state = {};
 
-const getters = {
-  getCurrencies() {
-    return [
-      { title: "₦", value: "NGN" },
-      { title: "$", value: "USD" },
-    ];
+const getters = {};
+
+const actions = {
+  logOut({ commit }) {
+    commit("setLogOut");
   },
 };
 
-const actions = {};
-
-const mutations = {};
+const mutations = {
+  setLogout() {
+    console.log("user logged out");
+    localStorage.clear()
+  },
+};
 
 export default {
   namespaced: true,

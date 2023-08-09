@@ -128,6 +128,8 @@ export default {
           this.toast.message = message;
           this.toast.color = "success";
 
+          localStorage.setItem("auth_token", res.data.token)
+
           this.$router.push("/profile")
 
           this.submitLoading = false;
