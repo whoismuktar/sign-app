@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import "@/assets/styles/base.scss"; // Custom CSS
-
 export default {
   name: "App",
 };
