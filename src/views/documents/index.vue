@@ -5,7 +5,7 @@
     <v-container>
       <v-row>
         <v-col v-for="(doc, index) in documents" :key="index" cols="12" md="4">
-          <doc-card :document="doc"></doc-card>
+          <doc-card :document="doc" />
           <div class="doc-name text-center">Document {{ index + 1 }}</div>
         </v-col>
       </v-row>
