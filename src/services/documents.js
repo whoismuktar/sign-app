@@ -11,3 +11,15 @@ export const getdocuments = () => {
 export const getSingleDoc = (docId) => {
   return axios.get(`/documents/${docId}`);
 };
+
+export const createPrint = (data) => {
+  return axios.post(`/prints`, data);
+};
+
+export const createResourceTool = (data) => {
+  return axios.post(`/document-resource-tools`, data);
+};
+
+export const selfSignDocument = (docId) => {
+  return axios.get(`/document-participant-add-self/${docId}`);
+};

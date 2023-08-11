@@ -12,8 +12,11 @@
 }
 
 .pryBtn {
-  background-color: $pry-color;
-  color: $white-color;
+  background-color: $pry-color !important;
+  color: $white-color !important;
+}
+.secBtn {
+  background-color: $secondary-color !important;
 }
 
 .form-wrapper {

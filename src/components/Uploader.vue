@@ -35,6 +35,8 @@ export default {
         }
 
         await uploadDoc(filesinBase64);
+        // TODO clear input after upload
+        // TODO upload status loader
         // TODO Notification
       } catch (error) {
         console.log({ error });

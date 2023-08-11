@@ -132,16 +132,21 @@ export default {
       this.mode = mode;
     },
     getSignatureValue() {
+      const result = {
+        category: this.getCategory,
+        type: this.sigType,
+        src: ""
+      };
+
       switch (this.mode) {
         case "draw":
           if (this.drawnSignature.isEmpty()) {
             return alert("Please draw a signature first.");
           }
 
-          this.$emit(
-            "getSignatureValue",
-            this.drawnSignature.toDataURL("image/png")
-          );
+          result.src = this.drawnSignature.toDataURL("image/png");
+
+          this.$emit("getSignatureValue", result);
           break;
 
         case "text":
@@ -156,16 +161,19 @@ export default {
           var text = this.sigText;
           ctx.fillText(text, 10, 50);
 
-          this.$emit("getSignatureValue", canvas.toDataURL());
+          result.src = canvas.toDataURL();
           break;
 
         case "image":
           if (!this.previewImage) {
             return alert("Please upload an image first.");
           }
-          this.$emit("getSignatureValue", this.previewImage);
+          result.src = this.previewImage;
           break;
       }
+
+      this.$emit("getSignatureValue", result);
+      this.clearAndClose();
     },
     clearAndClose() {
       this.$emit("closeDialog");
@@ -211,6 +219,22 @@ export default {
     },
   },
   computed: {
+    getCategory() {
+      let category = "";
+      switch (this.mode) {
+        case "draw":
+          category = "Draw";
+          break;
+        case "text":
+          category = "Type";
+          break;
+        case "image":
+          category = "Upload";
+          break;
+      }
+
+      return category;
+    },
     signatureTypes() {
       const options =
         "Initial|Signature|NotaryStamp|NotaryTraditionalSeal|NotaryDigitalSeal|CompanyStamp|CompanySeal|Photograph|Camera|LeftThumbFinger|LeftPointerFinger|LeftMiddleFinger|LeftRingFinger|LeftPinkyFinger|LeftPinkyFinger|RightThumbFinger|RightPointerFinger|RightMiddleFinger|RightRingFinger|RightPinkyFinger|Text";

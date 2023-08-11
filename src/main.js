@@ -12,7 +12,9 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     let isValidated = await getProfile()
+    localStorage.setItem("inperson", isValidated.data.data.id)
 
+    console.log({isValidated})
     if (TOKEN && isValidated) {
       next();
     } else {

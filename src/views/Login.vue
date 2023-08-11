@@ -74,7 +74,7 @@ export default {
       loginData: {
         email: "",
         password: "",
-        entry_point: "entry_point"
+        entry_point: "Authentication"
       },
       rules: {
         required: (value) => !!value || "Required",
