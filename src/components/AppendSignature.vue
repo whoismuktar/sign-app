@@ -19,13 +19,13 @@
           </div>
         </div>
         <div class="pad-container allChildrenCenter">
-          <div v-if="mode === 'draw'" class="signOnline_pad flex-grow-1">
+          <div v-show="mode === 'draw'" class="signOnline_pad flex-grow-1">
             <canvas id="canvas_signaturePad" class="mb-2"></canvas>
           </div>
 
           <div v-if="mode === 'text'" class="flex-grow-1">
             <v-text-field
-              v-model="sigText"
+              v-model.trim="sigText"
               label="Enter Text"
               clearable
               hide-details
@@ -120,7 +120,7 @@ export default {
       switch (this.mode) {
         case "draw":
           if (this.drawnSignature.isEmpty()) {
-            return alert("Please provide a signature first.");
+            return alert("Please draw a signature first.");
           }
 
           this.$emit(
@@ -130,7 +130,7 @@ export default {
           break;
 
         case "text":
-          if (this.sigText) {
+          if (!this.sigText) {
             return alert("Please enter your text first.");
           }
           var canvas = document.createElement("canvas");
@@ -145,7 +145,7 @@ export default {
           break;
 
         case "image":
-          if (this.previewImage) {
+          if (!this.previewImage) {
             return alert("Please upload an image first.");
           }
           this.$emit("getSignatureValue", this.previewImage);
@@ -165,7 +165,7 @@ export default {
       }
       this.drawnSignature.clear();
     },
-    digitalSignature() {
+    initSignatoryPad() {
       setTimeout(() => {
         // Digital Signature
         var canvas = document.querySelector("#canvas_signaturePad");
@@ -190,11 +190,22 @@ export default {
       this.appendToFormData();
     },
   },
-  mounted() {
-    this.digitalSignature();
+  watch: {
+    mode() {
+      this.clearSignature()
+    }
   },
-  destroyed() {
-    this.clearSignature();
+  computed: {
+    isValueAvailable() {
+      return (
+        this.drawnSignature.toDataURL("image/png") ||
+        this.sigText ||
+        this.previewImage
+      );
+    },
+  },
+  mounted() {
+    this.initSignatoryPad();
   },
 };
 </script>
