@@ -11,27 +11,51 @@
       content-class="doc-card-modal"
     >
       <div class="modal-decoy" @click="closeDoc"></div>
-      <div class="doc-preview">
-        <div class="doc-thumbnails">
-          <div
-            v-for="(thumbnail, index) in documentUploads"
-            :key="index"
-            class="thumbnail allChildrenCenter pa-4 mb-4"
-          >
-            <span>
-              {{ index + 1 }}
-            </span>
+
+      <div class="doc-preview-wrapper">
+        <div class="doc-preview-cta text-center mb-3">
+          <v-btn class="pryBtn" :to="`/docs/${document.id}/sign`">
+            Sign Document
+          </v-btn>
+        </div>
+        <div class="doc-preview-content">
+          <div class="doc-thumbnails">
+            <div v-for="(doc, index) in documentUploads" :key="index">
+              <div
+                :class="[
+                  `thumbnail allChildrenCenter pa-4 mb-2 ${
+                    doc.file_url === selectedDoc.file_url && 'thumbnail--active'
+                  }`,
+                ]"
+                @click="updateSelected(doc)"
+              >
+                <span>
+                  {{ index + 1 }}
+                </span>
+              </div>
+
+              <div
+                v-if="doc.file_url === selectedDoc.file_url"
+                class="doc-preview-cta d-flex justify-space-between mb-3"
+              >
+                <v-btn small class="secBtn" :to="`/docs/${document.id}`">
+                  View
+                </v-btn>
+                <v-btn small class="pryBtn" :to="`/docs/${document.id}/sign`">
+                  Sign
+                </v-btn>
+              </div>
+            </div>
+          </div>
+
+          <div class="doc-view-wrapper">
+            <vue-pdf-app
+              v-if="selectedDoc.file_url"
+              :pdf="selectedDoc.file_url"
+            ></vue-pdf-app>
+            <!-- TODO remove unneeded action icons -->
           </div>
         </div>
-
-        <div class="doc-view-wrapper">
-          <vue-pdf-app
-            v-if="selectedDoc.id"
-            :pdf="selectedDoc.file_url"
-          ></vue-pdf-app>
-        </div>
-        <!-- {{ firstDoc.file_url }} -->
-        <!-- {{ selectedDoc.file_url }} -->
       </div>
     </v-dialog>
   </div>
@@ -64,6 +88,8 @@ export default {
         this.fetchedDocument = res.data.data;
         this.selectedDoc = this.fetchedDocument.documentUploads[0] || {};
 
+        console.log();
+
         this.viewDocActive = true;
       } catch (error) {
         console.log({ error });
@@ -71,6 +97,9 @@ export default {
     },
     closeDoc() {
       this.viewDocActive = false;
+    },
+    updateSelected(doc) {
+      this.selectedDoc = doc;
     },
   },
   computed: {
@@ -98,25 +127,34 @@ export default {
   }
 }
 .doc-preview {
-  background-color: #ffffff;
-  height: 100vh;
-  width: 80%;
-  position: absolute;
-  right: 0;
-  padding: 40px;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-
-  .doc-thumbnails {
-    width: 10%;
-    .thumbnail {
-      background-color: #eaeaea;
-      cursor: pointer;
-    }
+  &-wrapper {
+    background-color: #ffffff;
+    height: 100vh;
+    width: 80%;
+    position: absolute;
+    right: 0;
+    padding: 40px;
   }
-  .doc-view-wrapper {
-    flex: 1;
+  &-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    height: 90%;
+
+    .doc-thumbnails {
+      width: 10%;
+      .thumbnail {
+        background-color: #eaeaea;
+        cursor: pointer;
+
+        &--active {
+          border: 2px solid;
+        }
+      }
+    }
+    .doc-view-wrapper {
+      flex: 1;
+    }
   }
 }
 </style>
