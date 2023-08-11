@@ -16,6 +16,20 @@
             <v-btn depressed @click="updateMode('draw')">Draw</v-btn>
             <v-btn depressed @click="updateMode('text')">Text</v-btn>
             <v-btn depressed @click="updateMode('image')">Image</v-btn>
+
+
+            <div style="max-width: 140px">
+              <v-select
+                v-model="sigType"
+                solo
+                label="Choose Type"
+                flat
+                dense
+                hide-detail
+                :items="signatureTypes"
+                offset-y
+              ></v-select>
+            </div>
           </div>
         </div>
         <div class="pad-container allChildrenCenter">
@@ -56,6 +70,7 @@
             id="save-png"
             width="170"
             class="pryBtn"
+            :disabled="!sigType"
             @click="getSignatureValue"
           >
             Apply Print
@@ -74,7 +89,6 @@
           <v-btn
             v-if="mode === 'image' && previewImage"
             :ripple="false"
-            for="imagePicker"
             text
             depressed
             icon
@@ -99,6 +113,7 @@ export default {
       previewImage: "",
       drawnSignature: "",
       sigText: "",
+      sigType: "",
     };
   },
   methods: {
@@ -158,7 +173,7 @@ export default {
     clearSignature() {
       this.previewImage = "";
       this.sigText = "";
-      this.sigText = "";
+      this.sigType = "";
 
       if (this.$refs.imagePicker) {
         this.$refs.imagePicker.value = "";
@@ -192,10 +207,17 @@ export default {
   },
   watch: {
     mode() {
-      this.clearSignature()
-    }
+      this.clearSignature();
+    },
   },
   computed: {
+    signatureTypes() {
+      const options =
+        "Initial|Signature|NotaryStamp|NotaryTraditionalSeal|NotaryDigitalSeal|CompanyStamp|CompanySeal|Photograph|Camera|LeftThumbFinger|LeftPointerFinger|LeftMiddleFinger|LeftRingFinger|LeftPinkyFinger|LeftPinkyFinger|RightThumbFinger|RightPointerFinger|RightMiddleFinger|RightRingFinger|RightPinkyFinger|Text";
+
+      const vals = options.split("|");
+      return vals;
+    },
     isValueAvailable() {
       return (
         this.drawnSignature.toDataURL("image/png") ||
@@ -206,6 +228,7 @@ export default {
   },
   mounted() {
     this.initSignatoryPad();
+    console.log(this.signatureTypes);
   },
 };
 </script>
