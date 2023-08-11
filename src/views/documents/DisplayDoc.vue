@@ -15,11 +15,6 @@ export default {
       document: {},
     };
   },
-  computed: {
-    docId() {
-      return this.$route.params.docId;
-    },
-  },
   methods: {
     async fetchSingleDoc() {
       try {
@@ -28,6 +23,11 @@ export default {
       } catch (error) {
         console.log({ error });
       }
+    },
+  },
+  computed: {
+    docId() {
+      return this.$route.params.docId;
     },
   },
   created() {

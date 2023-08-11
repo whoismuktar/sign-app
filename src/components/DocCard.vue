@@ -41,7 +41,7 @@
                 <v-btn small class="secBtn" :to="`/docs/${document.id}`">
                   View
                 </v-btn>
-                <v-btn small class="pryBtn" :to="`/docs/${document.id}/sign`">
+                <v-btn small class="pryBtn" :to="`/docs/${document.id}/${doc.id}/sign`">
                   Sign
                 </v-btn>
               </div>

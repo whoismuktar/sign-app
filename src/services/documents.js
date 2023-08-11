@@ -1,6 +1,6 @@
 import axios from "@/utils/axios";
 
-export const uploadDoc = (formData, base64Files) => {
+export const uploadDoc = (base64Files) => {
   return axios.post(`/document-upload-convert`, { files: base64Files });
 };
 

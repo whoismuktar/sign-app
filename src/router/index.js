@@ -54,7 +54,7 @@ const routes = [
     }
   },
   {
-    path: "/docs/:docId/sign",
+    path: "/docs/:docId/:docUploadId/sign",
     name: "signDoc",
     component: SignDoc,
     meta: {
