@@ -11,7 +11,7 @@ router.beforeEach(async (to, from, next) => {
   const TOKEN = localStorage.getItem("auth_token");
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const isValidated = await getProfile();
+    let isValidated = await getProfile()
 
     if (TOKEN && isValidated) {
       next();
@@ -21,7 +21,12 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.matched.some((record) => record.meta.requiresLanding)) {
-    if (TOKEN) {
+    let isValidated = await getProfile()
+
+
+    console.log({TOKEN, isValidated});
+    if (TOKEN && isValidated) {
+      console.log(1111);
       window.location.href = "/profile";
     } else {
       next();
