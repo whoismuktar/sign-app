@@ -19,12 +19,6 @@ instance.interceptors.response.use(
   },
 
   function (error) {
-    console.log(1, { error });
-    // if (error.status === 401) {
-      // TODO $store.dispatch("app/logOut");
-    // }
-
-
     return Promise.reject(error);
   }
 );

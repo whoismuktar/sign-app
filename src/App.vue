@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Nav />
     <v-app>
       <router-view />
     </v-app>
@@ -7,7 +8,11 @@
 </template>
 
 <script>
+import Nav from "@/components/Nav";
 export default {
   name: "App",
+  components: {
+    Nav,
+  },
 };
 </script>

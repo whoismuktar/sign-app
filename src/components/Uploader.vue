@@ -7,6 +7,10 @@
     ></v-file-input>
 
     <v-btn @click="uploadFiles" :disabled="files.length < 1">Upload</v-btn>
+
+    <v-snackbar v-model="toast.status" top centered :color="toast.color">
+      {{ toast.message }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -22,6 +26,11 @@ export default {
   },
   data() {
     return {
+      toast: {
+        status: false,
+        message: "",
+        color: "success",
+      },
       files: [],
     };
   },
@@ -35,12 +44,18 @@ export default {
         }
 
         await uploadDoc(filesinBase64);
-        // TODO clear input after upload
-        // TODO upload status loader
-        // TODO Notification
+
+        this.$$router.push("/docs")
+
+        this.toast.status = true;
+        this.toast.message = "Signed and submitted successfully";
+        this.toast.color = "success";
       } catch (error) {
         console.log({ error });
-        // TODO Notification
+
+        this.toast.status = true;
+        this.toast.message = "Error uploading";
+        this.toast.color = "red";
       }
     },
   },

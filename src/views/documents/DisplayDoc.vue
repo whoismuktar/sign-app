@@ -1,9 +1,6 @@
 <template>
   <div class="single-doc">
     <pre>{{ document }}</pre>
-    <!-- TODO Inivlaid Fallback component -->
-    <!-- TODO Not Found Fallback component -->
-    <!-- TODO Loader component -->
   </div>
 </template>
 

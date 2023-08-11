@@ -18,7 +18,6 @@ const actions = {
 
 const mutations = {
   setLogout() {
-    console.log("user logged out");
     localStorage.clear();
   },
 };

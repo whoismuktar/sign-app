@@ -59,7 +59,6 @@
 
 <script>
 import Fullscreen from "@/components/FullScreen";
-import { mapGetters } from "vuex";
 import { login } from "@/services/auth";
 
 export default {
@@ -121,16 +120,6 @@ export default {
   },
   components: {
     Fullscreen,
-  },
-  computed: {
-    ...mapGetters({
-      // rules: "app/rules",
-      // getCurrencies: "app/getCurrencies",
-    }),
-  },
-  mounted() {
-    // console.log({rules: this.rules});
-    // console.log({ rules: this.getCurrencies });
   },
 };
 </script>

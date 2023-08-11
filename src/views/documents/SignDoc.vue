@@ -47,20 +47,27 @@
           @mousedown="startDrag"
           @mousemove="drag"
           @mouseup="stopDrag"
-          alt=""
+          alt="signature"
           ref="printFile"
         />
-        <!-- TODO add alt on all images -->
 
         <input />
       </div>
     </div>
 
     <div class="text-center mt-10">
-      <v-btn :disabled="!printFile.src" class="pryBtn" @click="signAndSubmit"
+      <v-btn
+        :disabled="!printFile.src"
+        :loading="submitLoading"
+        class="pryBtn"
+        @click="signAndSubmit"
         >Sign and Submit</v-btn
       >
     </div>
+
+    <v-snackbar v-model="toast.status" top centered :color="toast.color">
+      {{ toast.message }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -83,6 +90,12 @@ export default {
   },
   data() {
     return {
+      submitLoading: false,
+      toast: {
+        status: false,
+        message: "",
+        color: "success",
+      },
       base64Image: null,
       docInBase64: "",
       fetchedDocument: null,
@@ -98,6 +111,8 @@ export default {
   },
   methods: {
     async signAndSubmit() {
+      this.submitLoading = true;
+
       this.postPrint()
         .then((printRes) => {
           console.log({ printRes });
@@ -109,16 +124,22 @@ export default {
 
           this.initSelfSign();
 
-          // TODO toast
+          this.toast.status = true;
+          this.toast.message = "Signed and submitted successfully";
+          this.toast.color = "success";
+
+          this.submitLoading = false;
         })
         .catch((err) => {
           console.log({ err });
-        });
+          this.toast.status = true;
+          this.toast.message = "Error processing your submission";
+          this.toast.color = "red";
 
-      // TODO toast
+          this.submitLoading = false;
+        });
     },
     async postPrint() {
-      console.log("start post post print");
       const data = {
         file: this.printFile.src,
         type: this.printFile.type,
@@ -133,7 +154,6 @@ export default {
       });
     },
     async postResourceTool() {
-      console.log("start post resource");
       const data = {
         document_upload_id: this.docUploadId,
         user_id: this.userId,
@@ -154,8 +174,6 @@ export default {
       });
     },
     async initSelfSign() {
-      console.log("start self sign");
-
       selfSignDocument(this.docId)
         .then((res) => {
           console.log({ res });
@@ -229,7 +247,6 @@ export default {
       this.$refs.appendSignature.clearSignature();
     },
     async fetchDoc() {
-      // TODO Loader
       try {
         const res = await getSingleDoc(this.docId);
         this.fetchedDocument = res.data.data;
@@ -256,7 +273,7 @@ export default {
   },
   computed: {
     userId() {
-      return localStorage.getItem("inperson")
+      return localStorage.getItem("inperson");
     },
     docId() {
       return this.$route.params.docId;

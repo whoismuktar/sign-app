@@ -53,7 +53,6 @@
               v-if="selectedDoc.file_url"
               :pdf="selectedDoc.file_url"
             ></vue-pdf-app>
-            <!-- TODO remove unneeded action icons -->
           </div>
         </div>
       </div>
@@ -82,13 +81,10 @@ export default {
   },
   methods: {
     async viewDoc() {
-      // TODO Loader
       try {
         const res = await getSingleDoc(this.document.id);
         this.fetchedDocument = res.data.data;
         this.selectedDoc = this.fetchedDocument.documentUploads[0] || {};
-
-        console.log();
 
         this.viewDocActive = true;
       } catch (error) {

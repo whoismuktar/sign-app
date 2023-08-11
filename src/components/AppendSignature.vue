@@ -252,7 +252,6 @@ export default {
   },
   mounted() {
     this.initSignatoryPad();
-    // console.log(this.signatureTypes);
   },
 };
 </script>

@@ -1,3 +1,5 @@
+// console.log = () => {} 
+
 import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
@@ -14,7 +16,6 @@ router.beforeEach(async (to, from, next) => {
     let isValidated = await getProfile()
     localStorage.setItem("inperson", isValidated.data.data.id)
 
-    console.log({isValidated})
     if (TOKEN && isValidated) {
       next();
     } else {
@@ -26,9 +27,7 @@ router.beforeEach(async (to, from, next) => {
     let isValidated = await getProfile()
 
 
-    console.log({TOKEN, isValidated});
     if (TOKEN && isValidated) {
-      console.log(1111);
       window.location.href = "/profile";
     } else {
       next();
