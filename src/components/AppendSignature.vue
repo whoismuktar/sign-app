@@ -17,7 +17,6 @@
             <v-btn depressed @click="updateMode('text')">Text</v-btn>
             <v-btn depressed @click="updateMode('image')">Image</v-btn>
 
-
             <div style="max-width: 140px">
               <v-select
                 v-model="sigType"
@@ -114,6 +113,7 @@ export default {
       drawnSignature: "",
       sigText: "",
       sigType: "",
+      box: null,
     };
   },
   methods: {
@@ -228,7 +228,7 @@ export default {
   },
   mounted() {
     this.initSignatoryPad();
-    console.log(this.signatureTypes);
+    // console.log(this.signatureTypes);
   },
 };
 </script>
