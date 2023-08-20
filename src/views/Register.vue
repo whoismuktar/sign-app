@@ -129,7 +129,7 @@ export default {
 
           localStorage.setItem("auth_token", res.data.token)
 
-          this.$router.push("/profile")
+          window.location.href = "/profile"
 
           this.submitLoading = false;
         } catch (error) {

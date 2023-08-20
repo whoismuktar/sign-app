@@ -2,6 +2,7 @@
   <div>
     <div class="topnav" id="myTopnav">
       <router-link to="/docs" class="active">Documents</router-link>
+      <router-link to="/profile" class="">Upload</router-link>
     </div>
   </div>
 </template>
@@ -44,6 +45,7 @@ body {
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+  margin-right: 5px;
 }
 
 .topnav a:hover {
@@ -61,9 +63,6 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-  .topnav a:not(:first-child) {
-    display: none;
-  }
   .topnav a.icon {
     float: right;
     display: block;
@@ -79,10 +78,14 @@ body {
     right: 0;
     top: 0;
   }
+  .topnav a:not(:last-child) {
+    margin-bottom: 5px;
+  }
   .topnav.responsive a {
     float: none;
     display: block;
     text-align: left;
+    margin-right: 0;
   }
 }
 </style>

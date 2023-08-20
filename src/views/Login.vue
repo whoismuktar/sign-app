@@ -73,7 +73,7 @@ export default {
       loginData: {
         email: "",
         password: "",
-        entry_point: "Authentication"
+        entry_point: "User",
       },
       rules: {
         required: (value) => !!value || "Required",
@@ -95,19 +95,17 @@ export default {
       if (isValid) {
         try {
           const res = await login(this.loginData);
-          console.log({ res });
-
-          const { message } = res.data;
 
           this.toast.status = true;
-          this.toast.message = message;
+          this.toast.message = "Login successful";
           this.toast.color = "success";
 
-          localStorage.setItem("auth_token", res.data.token)
+          localStorage.setItem("auth_token", res.data.token);
 
           this.submitLoading = false;
+          window.location.href = "/profile"
         } catch (error) {
-          const message =  "Invalid email or password"
+          const message = error.response?.data?.message || "Invalid email or password";
 
           this.toast.status = true;
           this.toast.message = message;

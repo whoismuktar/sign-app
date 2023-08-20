@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Nav />
+    <Nav v-if="isAuthenticated" />
     <v-app>
       <router-view />
     </v-app>
@@ -14,5 +14,10 @@ export default {
   components: {
     Nav,
   },
+  computed: {
+    isAuthenticated(){
+      return localStorage.getItem("auth_token")
+    }
+  }
 };
 </script>

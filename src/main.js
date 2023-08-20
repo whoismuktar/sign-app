@@ -5,7 +5,6 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import "@/assets/styles/base.scss"; // Custom CSS
 import router from "./router";
-import { getProfile } from "./services/user";
 
 Vue.config.productionTip = false;
 
@@ -13,10 +12,7 @@ router.beforeEach(async (to, from, next) => {
   const TOKEN = localStorage.getItem("auth_token");
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    let isValidated = await getProfile()
-    localStorage.setItem("inperson", isValidated.data.data.id)
-
-    if (TOKEN && isValidated) {
+    if (TOKEN) {
       next();
     } else {
       window.location.href = "/login";
@@ -24,10 +20,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.matched.some((record) => record.meta.requiresLanding)) {
-    let isValidated = await getProfile()
-
-
-    if (TOKEN && isValidated) {
+    if (TOKEN) {
       window.location.href = "/profile";
     } else {
       next();

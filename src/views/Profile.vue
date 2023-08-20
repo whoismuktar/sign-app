@@ -12,13 +12,22 @@
 
 <script>
 import Uploader from "@/components/Uploader";
+import { getProfile } from "@/services/user";
+
 export default {
   components: { Uploader },
   methods: {
     getFiles(val) {
       console.log({val});
     },
+    async getUser() {
+      const user = await getProfile()
+      localStorage.setItem("inperson", user?.data?.data?.id)
+    },
   },
+  mounted(){
+    this.getUser()
+  }
 };
 </script>
 
