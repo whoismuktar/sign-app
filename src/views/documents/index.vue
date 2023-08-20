@@ -3,7 +3,11 @@
     <h1 class="text-center">All Documents</h1>
 
     <v-container>
-      <v-row>
+      <div v-if="documents.length < 1" class="my-10 text-center">
+        No Documents
+      </div>
+      <v-row v-else>
+        <div>1</div>
         <v-col v-for="(doc, index) in documents" :key="index" cols="12" md="4">
           <doc-card :document="doc" />
           <div class="doc-name text-center">Document {{ index + 1 }}</div>
